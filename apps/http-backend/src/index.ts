@@ -2,7 +2,6 @@ import express from "express"
 import { userMiddleware } from "./middlewares/userMiddleware"
 import jwt from "jsonwebtoken"
 import { CreateUserSchema, SigninSchema, CreateRoomSchema } from "./schema"
-import { z } from 'zod'
 import dotenv from "dotenv"
 dotenv.config();
 
