@@ -1,11 +1,11 @@
 import express from "express"
 import { userMiddleware } from "./middlewares/userMiddleware"
 import jwt from "jsonwebtoken"
-import { CreateUserSchema, SigninSchema, CreateRoomSchema } from "./schema"
+import { CreateUserSchema, SigninSchema, CreateRoomSchema } from "@repo/common/types"
+import { JWT_SECRET } from "@repo/backend-common/config"
 import dotenv from "dotenv"
 dotenv.config();
 
-const JWT_SECRET = process.env.JWT_SECRET ?? '';
 
 const app = express();
 
