@@ -1,6 +1,8 @@
 import express from "express"
 import { userMiddleware } from "./middlewares/userMiddleware"
 import jwt from "jsonwebtoken"
+import { CreateUserSchema, SigninSchema, CreateRoomSchema } from "./schema"
+import { z } from 'zod'
 import dotenv from "dotenv"
 dotenv.config();
 
@@ -10,6 +12,14 @@ const app = express();
 
 app.post('signup', async function(req, res){
 
+    const parsedData = CreateUserSchema.safeParse(req.body);
+    if(!parsedData.success){
+        res.json({
+            error: 'Incorrect input'
+        });
+        return;
+    }
+
     //db call
     res.json({
         message: "You have successfully signed up!!!"
@@ -18,6 +28,14 @@ app.post('signup', async function(req, res){
 
 
 app.post('signin', async function(req, res){
+
+    const parsedData = SigninSchema.safeParse(req.body);
+    if(!parsedData.success){
+        res.json({
+            error: 'Incorrect input'
+        });
+        return;
+    }
 
     const userId = 'asdsads';
 
@@ -33,7 +51,17 @@ app.post('signin', async function(req, res){
 
 app.post('room', userMiddleware, async function(req, res){
 
+    const parsedData = CreateUserSchema.safeParse(req.body);
+    if(!parsedData.success){
+        res.json({
+            error: 'Incorrect input'
+        });
+        return;
+    }
 
+    res.json({
+        roomId: 123
+    })
 })
 
 
