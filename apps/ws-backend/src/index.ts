@@ -10,5 +10,5 @@ wss.on('connection', function connection(ws){
         console.log('Recieved: ' + data)
     })
 
-    ws.send('wadup');
+    ws.send('wadup');           
 })
