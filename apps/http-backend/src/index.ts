@@ -3,6 +3,7 @@ import { userMiddleware } from "./middlewares/userMiddleware"
 import jwt from "jsonwebtoken"
 import { CreateUserSchema, SigninSchema, CreateRoomSchema } from "@repo/common/types"
 import { JWT_SECRET } from "@repo/backend-common/config"
+import { prismaClient } from "@repo/db/client"
 import dotenv from "dotenv"
 dotenv.config();
 
