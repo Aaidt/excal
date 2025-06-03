@@ -1,9 +1,8 @@
 import { WebSocketServer } from "ws"
 import jwt from 'jsonwebtoken'
+import { JWT_SECRET } from "@repo/backend-common/config"
 import dotenv from "dotenv";
 dotenv.config();
-
-import { JWT_SECRET } from "@repo/backend-common/config"
 
 const wss = new WebSocketServer({ port: 8080 });
 

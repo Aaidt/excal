@@ -7,7 +7,6 @@ import { prismaClient } from "@repo/db/client"
 import dotenv from "dotenv"
 dotenv.config();
 
-
 const app = express();
 app.use(express.json());
 
@@ -56,33 +55,40 @@ app.post('/signin', async function (req, res) {
 
     // compare the hashed pw
 
-    const user = await prismaClient.user.findFirst({
-        where: {
-            username: parsedData.data.username,
-            password: parsedData.data.password
-        }
-    })
+    try {
+        const user = await prismaClient.user.findFirst({
+            where: {
+                username: parsedData.data.username,
+                password: parsedData.data.password
+            }
+        })
 
-    if(!user){
-        res.status(403).json({
-            message: "User doesnt exist."
+        if (!user) {
+            res.status(403).json({
+                message: "User doesnt exist."
+            });
+            return;
+        }
+
+        const token = jwt.sign({
+            userId: user?.id
+        }, JWT_SECRET);
+
+        res.json({
+            token
         });
-        return;
+    } catch (e) {
+        res.status(411).json({
+            message: "Incorrect credentials."
+        })
     }
 
-    const token = jwt.sign({
-        userId: user?.id
-    }, JWT_SECRET);
-
-    res.json({
-        token
-    });
 })
 
 
 app.post('/room', userMiddleware, async function (req, res) {
 
-    const parsedData = CreateUserSchema.safeParse(req.body);
+    const parsedData = CreateRoomSchema.safeParse(req.body);
     if (!parsedData.success) {
         res.json({
             error: 'Incorrect input'
@@ -91,25 +97,31 @@ app.post('/room', userMiddleware, async function (req, res) {
     }
 
     const userId = req.userId;
-    if(!userId){
+    if (!userId) {
         res.status(403).json({
             message: "Unauthorized."
         });
         return;
     }
 
-    await prismaClient.room.create({
-        data: {
-            slug: parsedData.data.name,
-            adminId: userId
-        }
-    })
+    try {
+        const room = await prismaClient.room.create({
+            data: {
+                slug: parsedData.data.name,
+                adminId: userId
+            }
+        })
 
-    res.json({
-        roomId: 123
-    })
+        res.json({
+            roomId: room.id
+        })
+    } catch (e) {
+        res.status(411).json({
+            message: "Server error."
+        })
+    }
+
 })
-
 
 
 const port = process.env.PORT;
