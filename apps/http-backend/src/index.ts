@@ -54,10 +54,24 @@ app.post('/signin', async function (req, res) {
         return;
     }
 
-    const userId = 'asdsads';
+    // compare the hashed pw
+
+    const user = await prismaClient.user.findFirst({
+        where: {
+            username: parsedData.data.username,
+            password: parsedData.data.password
+        }
+    })
+
+    if(!user){
+        res.status(403).json({
+            message: "User doesnt exist."
+        });
+        return;
+    }
 
     const token = jwt.sign({
-        userId
+        userId: user?.id
     }, JWT_SECRET);
 
     res.json({
@@ -75,6 +89,21 @@ app.post('/room', userMiddleware, async function (req, res) {
         });
         return;
     }
+
+    const userId = req.userId;
+    if(!userId){
+        res.status(403).json({
+            message: "Unauthorized."
+        });
+        return;
+    }
+
+    await prismaClient.room.create({
+        data: {
+            slug: parsedData.data.name,
+            adminId: userId
+        }
+    })
 
     res.json({
         roomId: 123
