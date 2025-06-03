@@ -66,10 +66,10 @@ app.post('/signin', async function (req, res) {
             });
             return;
         }
-        
+
         const isRealUser = bcrypt.compare(parsedData.data.password, user.password)
 
-        if(!isRealUser){
+        if (!isRealUser) {
             res.status(411).json({
                 message: "Password is incorrect."
             });
@@ -128,21 +128,45 @@ app.post('/room', userMiddleware, async function (req, res) {
 
 })
 
-app.get('/chats/:roomId', async function(req, res){
+app.get('/chats/:roomId', async function (req, res) {
     const roomId = Number(req.params.roomId);
-    const messages = await prismaClient.room.findMany({
-        where: {
-            id: roomId
-        },
-        orderBy: {
-            id: "desc"
-        },
-        take: 50
-    });
+    try {
+        const messages = await prismaClient.chat.findMany({
+            where: {
+                roomId: roomId
+            },
+            orderBy: {
+                id: "desc"
+            },
+            take: 50
+        });
 
-    res.json({
-        messages
-    })
+        res.json({
+            messages
+        })
+    }catch(e){
+        res.status(403).json({
+            message: "Room could not be found."
+        })
+    }
+})
+
+app.get('/room/:slug', async function (req, res) {
+    const slug = req.params.slug;
+    try {
+        const room = await prismaClient.room.findFirst({
+            where: {
+                slug
+            }
+        });
+        res.json({
+            roomId: room?.id
+        })
+    }catch(e){
+        res.status(403).json({
+            message: "Room could not be found."
+        })
+    }
 })
 
 const port = process.env.PORT;
