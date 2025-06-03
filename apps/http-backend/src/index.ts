@@ -1,5 +1,5 @@
 import express from "express"
-import { userMiddleware } from "./middlewares/userMiddleware"
+import { userMiddleware } from "./userMiddleware"
 import jwt from "jsonwebtoken"
 import { CreateUserSchema, SigninSchema, CreateRoomSchema } from "@repo/common/types"
 import { JWT_SECRET } from "@repo/backend-common/config"
@@ -9,28 +9,45 @@ dotenv.config();
 
 
 const app = express();
+app.use(express.json());
 
-app.post('signup', async function(req, res){
+app.post('/signup', async function (req, res) {
 
     const parsedData = CreateUserSchema.safeParse(req.body);
-    if(!parsedData.success){
+    if (!parsedData.success) {
         res.json({
             error: 'Incorrect input'
         });
         return;
     }
 
-    //db call
-    res.json({
-        message: "You have successfully signed up!!!"
-    })
+    try {
+        const user = await prismaClient.user.create({
+            data: {
+                username: parsedData.data.username,
+                // hash the password
+                password: parsedData.data.password,
+                name: parsedData.data.name,
+
+            }
+        })
+
+        res.json({
+            userId: user.id
+        })
+    } catch (e) {
+        res.status(411).json({
+            message: "This username already exists."
+        })
+    }
+
 })
 
 
-app.post('signin', async function(req, res){
+app.post('/signin', async function (req, res) {
 
     const parsedData = SigninSchema.safeParse(req.body);
-    if(!parsedData.success){
+    if (!parsedData.success) {
         res.json({
             error: 'Incorrect input'
         });
@@ -49,10 +66,10 @@ app.post('signin', async function(req, res){
 })
 
 
-app.post('room', userMiddleware, async function(req, res){
+app.post('/room', userMiddleware, async function (req, res) {
 
     const parsedData = CreateUserSchema.safeParse(req.body);
-    if(!parsedData.success){
+    if (!parsedData.success) {
         res.json({
             error: 'Incorrect input'
         });

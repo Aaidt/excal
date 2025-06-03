@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -13,8 +12,7 @@ model User {
   username String  @unique
   password String
   name     String?
-  photo    String
-  roomId   Int
+  photo    String?
   chats    Chat[]
   rooms    Room[]
 }
@@ -24,8 +22,8 @@ model Room {
   slug       String   @unique
   created_at DateTime @default(now())
   adminId    String
-  chats      Chat[]
   admin      User     @relation(fields: [adminId], references: [id])
+  chats      Chat[]
 }
 
 model Chat {
