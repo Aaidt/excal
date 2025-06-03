@@ -122,7 +122,7 @@ app.post('/room', userMiddleware, async function (req, res) {
         })
     } catch (e) {
         res.status(411).json({
-            message: "Server error."
+            message: "Room with this name already exists."
         })
     }
 
