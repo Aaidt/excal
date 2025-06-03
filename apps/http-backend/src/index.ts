@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken"
 import { CreateUserSchema, SigninSchema, CreateRoomSchema } from "@repo/common/types"
 import { JWT_SECRET } from "@repo/backend-common/config"
 import { prismaClient } from "@repo/db/client"
+import bcrypt from "bcrypt"
 import dotenv from "dotenv"
 dotenv.config();
 
@@ -20,14 +21,14 @@ app.post('/signup', async function (req, res) {
         return;
     }
 
+    const hashedPassword = await bcrypt.hash(parsedData.data.password, 5)
+
     try {
         const user = await prismaClient.user.create({
             data: {
                 username: parsedData.data.username,
-                // hash the password
-                password: parsedData.data.password,
+                password: hashedPassword,
                 name: parsedData.data.name,
-
             }
         })
 
@@ -42,7 +43,6 @@ app.post('/signup', async function (req, res) {
 
 })
 
-
 app.post('/signin', async function (req, res) {
 
     const parsedData = SigninSchema.safeParse(req.body);
@@ -53,19 +53,25 @@ app.post('/signin', async function (req, res) {
         return;
     }
 
-    // compare the hashed pw
-
     try {
         const user = await prismaClient.user.findFirst({
             where: {
-                username: parsedData.data.username,
-                password: parsedData.data.password
+                username: parsedData.data.username
             }
         })
 
         if (!user) {
             res.status(403).json({
                 message: "User doesnt exist."
+            });
+            return;
+        }
+        
+        const isRealUser = bcrypt.compare(parsedData.data.password, user.password)
+
+        if(!isRealUser){
+            res.status(411).json({
+                message: "Password is incorrect."
             });
             return;
         }
@@ -84,7 +90,6 @@ app.post('/signin', async function (req, res) {
     }
 
 })
-
 
 app.post('/room', userMiddleware, async function (req, res) {
 
@@ -122,7 +127,6 @@ app.post('/room', userMiddleware, async function (req, res) {
     }
 
 })
-
 
 const port = process.env.PORT;
 app.listen(port, () => {
