@@ -128,6 +128,23 @@ app.post('/room', userMiddleware, async function (req, res) {
 
 })
 
+app.get('/chats/:roomId', async function(req, res){
+    const roomId = Number(req.params.roomId);
+    const messages = await prismaClient.room.findMany({
+        where: {
+            id: roomId
+        },
+        orderBy: {
+            id: "desc"
+        },
+        take: 50
+    });
+
+    res.json({
+        messages
+    })
+})
+
 const port = process.env.PORT;
 app.listen(port, () => {
     console.log('Server is listening on port: ' + port);
