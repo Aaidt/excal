@@ -5,11 +5,13 @@ import { CreateUserSchema, SigninSchema, CreateRoomSchema } from "@repo/common/t
 import { JWT_SECRET } from "@repo/backend-common/config"
 import { prismaClient } from "@repo/db/client"
 import bcrypt from "bcrypt"
+import cors from 'cors';
 import dotenv from "dotenv"
 dotenv.config();
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.post('/signup', async function (req, res) {
 
@@ -162,7 +164,7 @@ app.get('/room/:slug', async function (req, res) {
         res.json({
             roomId: room?.id
         })
-    }catch(e){
+    }catch(e){  
         res.status(403).json({
             message: "Room could not be found."
         })
