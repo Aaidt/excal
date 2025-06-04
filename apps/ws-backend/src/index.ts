@@ -36,17 +36,17 @@ wss.on('connection', function connection(ws, request) {
     console.log('Incoming connection');
     const url = request.url;
     if (!url) {
-        console.log('no url')
+        console.log('No url provided.')
         return
     }
     const queryParams = new URLSearchParams(url.split('?')[1]);
     const token = queryParams.get('token') ?? '';
-    console.log('got token' + token)
+    console.log('Token extracted.' + token)
 
     const userId = checkUser(token);
 
     if (userId == null) {
-        console.log('token is null')
+        console.log('Wrong token provided.')
         ws.close()
         return null
     }
@@ -61,8 +61,12 @@ wss.on('connection', function connection(ws, request) {
 
     ws.on('message', async function message(data) {
         let parsedData;
+        if(typeof data !== "string"){
+            return
+        }
+
         try {
-            parsedData = JSON.parse(data as unknown as string);
+            parsedData = JSON.parse(data);
         } catch (e) {
             console.log('Invalid JSON recived ' + data);
             ws.send(JSON.stringify({ type: 'error', message: 'Invalid JSON' }))
@@ -77,9 +81,19 @@ wss.on('connection', function connection(ws, request) {
         if (parsedData.type === 'leave_room') {
             const user = users.find(x => x.ws === ws);
             if (!user) {
+                ws.send(JSON.stringify({ type:"error", message: "No user found" }))
                 return;
             }
-            user.rooms = user.rooms.filter(x => x !== parsedData.roomId)
+
+            const wasInRoom = user.rooms.includes(parsedData.roomId)
+            user.rooms = user.rooms.filter(x => x !== parsedData.roomId);
+
+            ws.send(JSON.stringify({
+                type: "Leave_room",
+                roomId: parsedData.roomId,
+                success: true,
+                message: wasInRoom ? "Successfully removed from the room" : "You are not in this room"
+            }))
         }
 
         if (parsedData.type === 'chat') {
