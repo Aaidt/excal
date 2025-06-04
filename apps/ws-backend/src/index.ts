@@ -21,26 +21,32 @@ function checkUser(token: string): string | null {
         if (typeof decoded == 'string') {
             return null
         }
-        if (!decoded || !(decoded as jwt.JwtPayload).userId) {
+        if (!decoded || !decoded.userId) {
             return null
         }
+        console.log('verified')
         return decoded.userId
     } catch (e) {
+        console.log(e)
         return null
     }
 }
 
 wss.on('connection', function connection(ws, request) {
+    console.log('Incoming connection');
     const url = request.url;
     if (!url) {
+        console.log('no url')
         return
     }
     const queryParams = new URLSearchParams(url.split('?')[1]);
     const token = queryParams.get('token') ?? '';
+    console.log('got token' + token)
 
     const userId = checkUser(token);
 
     if (userId == null) {
+        console.log('token is null')
         ws.close()
         return null
     }
