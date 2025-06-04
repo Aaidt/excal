@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <div>
-        <input placeholder="enter roomId"
+        <input placeholder="enter room name"
         value={roomId}
         onChange={(e) => setRoomId(e.target.value)}
         type="text" />
