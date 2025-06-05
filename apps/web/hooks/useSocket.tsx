@@ -28,9 +28,9 @@ export function useSocket() {
             console.log('Disconnected from WebSocketServer')
         }
 
-        // return () => {
-        //     ws.close();
-        // }
+        return () => {
+            ws.close();
+        }
     }, []);
 
     return {
