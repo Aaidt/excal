@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Share2, Users, Download, Layers } from 'lucide-react'
+import { ArrowRight, Share2, Users, Download, Layers, Star, CircleUserRound } from 'lucide-react'
 import { motion } from "framer-motion"
 
 export default function Home() {
@@ -21,6 +21,24 @@ export default function Home() {
       icon: <Layers className="h-10 w-10" />,
       title: "Infinite canvas",
       description: "Never run out of space with our infinite canvas that expands as you draw.",
+    }
+  ]
+
+  const testimonial = [
+    {
+      quote: "Excal has transformed how our design team collaborates. The real-time features save us hours of back and forth.",
+      author: "Sarah Johnson",
+      role: "Product Designer, Acme Inc."
+    },
+    {
+      quote: "I use Excal daily for wireframing and brainstorming. The interface is so intuitive that my non-designer colleagues can jump right in.",
+      author: "Michael Chen",
+      role: "UX Lead, TechStart"
+    },
+    {
+      quote: "As a remote team, we needed a tool that makes visual collaboration easy. Excal exceeded our expectations on all fronts.",
+      author: "Emma Rodriguez",
+      role: "Project manager, RemoteWorks"
     }
   ]
 
@@ -110,6 +128,42 @@ export default function Home() {
 
         </div>
       </div>
+
+
+      <div className="pt-15 pb-20 border-b border-white/30 ">
+        <h1 className="flex justify-center mr-25 text-5xl font-bold pb-5">Loved by teams worldwide</h1>
+        <p className="flex justify-center mr-25 text-xl text-gray-400 ">See what our users say about their experience with Excal.</p>
+
+        <div className="flex justify-center pt-10 gap-8">
+          {testimonial.map((testimonial, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: index * 0.2 }}
+              className="bg-black border border-white/30 text-white/90 p-6 w-102 rounded-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-white/10"
+            >
+              <div className="flex">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-5 w-5 fill-white mb-4" />
+                ))}
+              </div>
+              <div className="text-lg pb-6">"{testimonial.quote}"</div>
+              <div className="text-md flex items-center">
+                <CircleUserRound className="m-2" />
+                <div className="flex flex-col">
+                  {testimonial.author}
+                  <div className="text-sm font-thin">{testimonial.role}</div>
+                </div>
+              </div>
+
+            </motion.div>
+          ))}
+        </div>
+
+      </div>
+
 
 
     </div>
