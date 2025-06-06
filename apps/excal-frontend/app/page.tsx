@@ -87,6 +87,21 @@ export default function Home() {
     }
   ]
 
+  const footer = [
+    {
+      title: "Product",
+      links: ["Features", "Pricing", "Integrations"],
+    },
+    {
+      title: "Resources",
+      links: ["Blog", "Guides", "Help Center"],
+    },
+    {
+      title: "Company",
+      links: ["About", "Careers", "Contact", "Privacy"],
+    }
+  ]
+
   return (
     <div className="bg-black text-white min-w-screen min-h-screen min-h-full">
 
@@ -280,6 +295,27 @@ export default function Home() {
       </div>
 
       <div className="pt-10 pb-15 border border-white/30">
+
+        <div className="grid grid-cols-4 gap-8">
+          <div className="pl-8">
+            <h2 className="font-bold text-2xl pb-4">Excal</h2>
+            <p className="text-gray-400 text-md">Create beautiful digrams, sketches, and wireframes with a simple , intuitive interface</p>
+          </div>
+
+          {footer.map((column, index) => (
+            <div key={index} className="cursor-pointer">
+              <h3 className="font-semibold pb-4">{column.title}</h3>
+              <ul className="space-y-2">
+                {column.links.map((link, i) => (
+                  <li key={i}>
+                    {link}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+        </div>
 
       </div>
 
