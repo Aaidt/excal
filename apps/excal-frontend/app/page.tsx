@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Share2, Users, Download, Layers, Star, CircleUserRound } from 'lucide-react'
+import { ArrowRight, Share2, Users, Download, Layers, Star, CircleUserRound, Check } from 'lucide-react'
 import { motion } from "framer-motion"
 
 export default function Home() {
@@ -42,6 +42,51 @@ export default function Home() {
     }
   ]
 
+  const prices = [
+    {
+      name: "Free",
+      price: "$0",
+      description: "Perfect for getting started",
+      features: [
+        "Up to 100 notes",
+        "Basic organization",
+        "Mobile access",
+        "Community support"
+      ],
+      buttonText: "Get Started",
+    },
+    {
+      name: "Pro",
+      price: "$9.99",
+      period: "/month",
+      description: "For serious thinkers",
+      features: [
+        "Unlimited notes",
+        "Advanced organization",
+        "AI-powered insights",
+        "Priority support",
+        "Custom themes",
+        "Export options"
+      ],
+      buttonText: "Start Free Trial",
+      popular: true
+    },
+    {
+      name: "Enterprise",
+      price: "Custom",
+      description: "For organizations",
+      features: [
+        "Everything in Pro",
+        "Team collaboration",
+        "Advanced security",
+        "Custom integrations",
+        "Dedicated support",
+        "SLA guarantee"
+      ],
+      buttonText: "Contact Sales"
+    }
+  ]
+
   return (
     <div className="bg-black text-white min-w-screen min-h-screen min-h-full">
 
@@ -51,10 +96,15 @@ export default function Home() {
           <div className="text-3xl font-bold flex items-center cursor-pointer">Excal</div>
 
           <div className="flex items-center gap-6">
-            <div className="hover:underline hover:underline-offset-3 font-semibold transition-all duration-300 hover:-translate-y-1 cursor-pointer">Features</div>
-            <div className="hover:underline hover:underline-offset-3 font-semibold transition-all duration-300 hover:-translate-y-1 cursor-pointer">How it works</div>
-            <div className="hover:underline hover:underline-offset-3 font-semibold transition-all duration-300 hover:-translate-y-1 cursor-pointer">Testimonials</div>
-            <div className="hover:underline hover:underline-offset-3 font-semibold transition-all duration-300 hover:-translate-y-1 cursor-pointer">Pricing</div>
+            <Link href="#features">
+              <div className="hover:underline hover:underline-offset-3 font-semibold transition-all duration-300 hover:-translate-y-1 cursor-pointer">Features</div>
+            </Link>
+            <Link href="#testimonials">
+              <div className="hover:underline hover:underline-offset-3 font-semibold transition-all duration-300 hover:-translate-y-1 cursor-pointer">Testimonials</div>
+            </Link>
+            <Link href="#pricing">
+              <div className="hover:underline hover:underline-offset-3 font-semibold transition-all duration-300 hover:-translate-y-1 cursor-pointer">Pricing</div>
+            </Link>
 
             <div className="flex gap-2">
               <Link href="/signup">
@@ -104,8 +154,8 @@ export default function Home() {
       </div>
 
 
-      <div className="pb-30 border-b border-white/30">
-        <h1 className="font-bold text-5xl pt-10 pl-15 mr-18 flex justify-center">Powerful features for creative minds</h1>
+      <div id="features" className="pb-30 border-b bg-white/10 text-white border-white/30">
+        <h1 className="font-bold text-5xl pt-15 pl-15 mr-18 flex justify-center">Powerful features for creative minds</h1>
         <p className="mr-18 pt-5 text-gray-400 flex justify-center text-xl text-center">Everything you need to bring your ideas to life, collaborate with others, <br />
           and share your vision.</p>
         <div className="flex gap-12 justify-center pt-5">
@@ -117,7 +167,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 40 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.2 }}
-              className="bg-black border border-white/20 text-white/90 p-4 w-78 rounded-md transition-all duration-300 hover:shadow-lg hover:shadow-white/10 hover:-translate-y-1"
+              className="bg-black border border-white/30 text-white/90 p-4 w-78 rounded-md transition-all duration-300 hover:shadow-lg hover:shadow-white/10 hover:-translate-y-1"
             >
               <div className="w-fit pb-6 p-4">{feature.icon}</div>
               <h3 className="text-2xl font-bold pb-4">{feature.title}</h3>
@@ -130,7 +180,7 @@ export default function Home() {
       </div>
 
 
-      <div className="pt-15 pb-20 border-b border-white/30 ">
+      <div id="testimonials" className="pt-15 pb-20 border-b border-white/30 ">
         <h1 className="flex justify-center mr-25 text-5xl font-bold pb-5">Loved by teams worldwide</h1>
         <p className="flex justify-center mr-25 text-xl text-gray-400 ">See what our users say about their experience with Excal.</p>
 
@@ -165,6 +215,53 @@ export default function Home() {
       </div>
 
 
+      <div id="pricing" className="pt-15 pb-20 border-b border-white/30">
+
+        <div className="text-5xl font-bold flex justify-center pb-15">
+          Pricing
+        </div>
+
+        <div className="flex gap-8 justify-center">
+          {prices.map((tier, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: index * 0.2 }}
+              className={`bg-black text-white p-8 rounded-lg flex flex-col w-78
+                  ${tier.popular ? "shadow-md shadow-white/60 border-2 border-white hover:shadow-lg transition-all duration-300"
+                  : "hover:shadow-white/80 border border-white/30 duration-300 transition-all hover:shadow-md duration-300"}`}
+            >
+              {tier.popular && (
+                <div className="rounded-full w-fit text-sm mb-4 px-3 py-1 bg-white text-black font-medium">
+                  Most popular
+                </div>
+              )}
+              <h3 className="font-medium">{tier.name}</h3>
+              <div className="flex items-baseline mb-4 ">
+                <span className="text-4xl font-light">{tier.price}</span>
+                {tier.period && <span className="text-lg text-gray-400 ml-1">{tier.period}</span>}
+              </div>
+              <p className=" mb-6 text-gray-400">{tier.description}</p>
+              <ul className="space-y-3 mb-8">
+                {tier.features.map((feature, i) => (
+                  <li key={i} className="flex items-center gap-2">
+                    <Check className="h-5 w-5 " />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link href="/signup">
+                <button className={`hover:-translate-y-1 px-2 py-1 rounded-md w-full duration-300 font-medium
+                ${tier.popular ? "bg-white text-black hover:bg-white/80" : "border border-white/30 hover:bg-white/10"}`}>{tier.buttonText}</button>
+              </Link>
+
+            </motion.div>
+
+          ))}
+        </div>
+      </div>
 
     </div>
   );
