@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Share2, Users, Download, Layers, Star, CircleUserRound, Check } from 'lucide-react'
+import { ArrowRight, Share2, Users, Layers, Star, CircleUserRound, Check, ChevronRight } from 'lucide-react'
 import { motion } from "framer-motion"
 
 export default function Home() {
@@ -253,7 +253,7 @@ export default function Home() {
                 ))}
               </ul>
               <Link href="/signup">
-                <button className={`hover:-translate-y-1 px-2 py-1 rounded-md w-full duration-300 font-medium
+                <button className={`hover:-translate-y-1 px-2 py-1 rounded-md w-full duration-300 font-medium cursor-pointer
                 ${tier.popular ? "bg-white text-black hover:bg-white/80" : "border border-white/30 hover:bg-white/10"}`}>{tier.buttonText}</button>
               </Link>
 
@@ -262,6 +262,27 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      <div className="pt-15 pb-20 border border-white/30 bg-white text-black flex ">
+
+        <div className="pl-25">
+          <h1 className="text-4xl font-bold pb-6">Ready to bring your ideas to life?</h1>
+          <p className="text-gray-600 text-lg">Join thousands of teams who use Excal to collaborate, ideate,
+            <br /> and create amazing visuals together</p>
+        </div>
+        <div className="flex jusify-center items-center pl-15 gap-8">
+          <button className="cursor-pointer bg-black/80 text-white rounded-md px-4 py-2 hover:bg-black/90 duration-300 transition-all flex">
+            Start for free <ChevronRight />
+          </button>
+          <button className="bg-white cursor-pointer hover:bg-black/20 text-black rounded-md px-4 py-2 border border-black/30 duration-300 transition-all">See live demo</button>
+        </div>
+
+      </div>
+
+      <div className="pt-10 pb-15 border border-white/30">
+
+      </div>
+
 
     </div>
   );
