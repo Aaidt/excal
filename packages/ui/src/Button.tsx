@@ -1,7 +1,5 @@
 "use client";
 
-import { ReactNode } from "react";
-
 interface ButtonProps {
   text: string,
   size: "md" | "lg",
@@ -9,22 +7,21 @@ interface ButtonProps {
   color: "white" | "black"
 }
 
-const sizeStyles = {
+const sizeClass: Record<ButtonProps["size"], string> = {
   "md": "px-2 py-1",
   "lg": "px-3 py-1"
 }
 
-const colorStyles = {
-  "white": "bg-white hover:bg-white/70 text-white",
-  "black": "bg-black hover:bg-black/70 text-white"
+const colorClass: Record<ButtonProps["color"], string> = {
+  "white": "bg-white hover:bg-white/70 text-black",
+  "black": "bg-black hover:bg-black/90 text-white"
 }
 
-const fixedStyles = "rounded-lg cursor-pointer"
-
 export const Button = (props: ButtonProps) => {
+
   return (
     <button
-      className={`${sizeStyles[props.size]} ${fixedStyles} ${colorStyles[props.color]}`}
+      className={`rounded-lg cursor-pointer ${sizeClass[props.size]} ${colorClass[props.color]}`}
       onClick={props.onClick}
     >
       {props.text}
