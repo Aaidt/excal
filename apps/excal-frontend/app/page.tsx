@@ -2,10 +2,12 @@
 
 import Link from "next/link"
 import Image from "next/image"
+import { ArrowRight } from 'lucide-react'
+import { Users } from 'lucide-react'
 
 export default function Home() {
   return (
-    <div className="bg-[#0C090A] text-white w-screen h-screen">
+    <div className="bg-black text-white min-w-screen min-h-screen">
 
       <div className="top-0 left-0 border-y border-white/20 bg-black w-screen h-20">
         <div className="flex justify-between items-center h-full px-6">
@@ -36,21 +38,36 @@ export default function Home() {
 
         <div className="flex flex-col pt-5">
           <div className="tracking-wide font-bold text-6xl pb-5">
-          Draw and collaborate <br />
-          in real-time
+            Draw and collaborate <br />
+            in real-time
           </div>
-          
-          <div className="font-light text-xl text-justify text-wrap leading-8">
+
+          <div className=" text-xl text-gray-400 text-justify text-wrap leading-8">
             Create beautiful diagrams, sketches and wireframes with a <br />
             simple, intuitive interface. Share your ideas with your team in <br />
             real-time and bring your concpets to life.
           </div>
+
+          <div className="pt-5 flex ">
+            <button className="bg-white flex items-center text-black font-medium text-md rounded-md px-3 py-2 flex cursor-pointer hover:bg-white/80 transition-all duration-200">
+              Start drawing now <ArrowRight className="pl-2" />
+            </button>
+            <button
+              className="ml-6 bg-black font-medium border flex items-center border-white/30 transition-all duration-300 hover:bg-white/10 px-3 py-2 rounded-md cursor-pointer">
+              Watch demo
+            </button>
+          </div>
+
+          <div className="flex pt-5 text-gray-400">
+            <Users className="mr-2" /> 15,000+ teams already using Excal.
+          </div>
+
         </div>
 
-        <Image className="hover:shadow-lg transition-all duration-200 hover:shadow-white/10" src="https://i.pinimg.com/736x/9a/83/ef/9a83ef6460721ba0e09b5fc69bc5d64b.jpg" alt="image" width={300} height={500} />
+        <Image className="hover:shadow-lg transition-all duration-200 hover:shadow-white/30" src="https://i.pinimg.com/736x/6e/22/33/6e22335dfb94c453afefc69cb46528f2.jpg" alt="image" width={400} height={500} />
       </div>
 
     </div>
   );
-} 
+}
 
