@@ -182,7 +182,8 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 40 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.2 }}
-              className="bg-black border border-white/30 text-white/90 p-4 w-78 rounded-md transition-all duration-300 hover:shadow-lg hover:shadow-white/10 hover:-translate-y-1"
+              className="bg-black border border-white/30 text-white/90 p-4 w-82 rounded-md transition-all 
+              duration-300 hover:shadow-lg hover:shadow-white/10 hover:-translate-y-1"
             >
               <div className="w-fit pb-6 p-4">{feature.icon}</div>
               <h3 className="text-2xl font-bold pb-4">{feature.title}</h3>
@@ -214,7 +215,7 @@ export default function Home() {
                   <Star key={i} className="h-5 w-5 fill-white mb-4" />
                 ))}
               </div>
-              <div className="text-lg pb-6">"{testimonial.quote}"</div>
+              <div className="text-lg pb-6">&ldquo;{testimonial.quote}&rdquo;</div>
               <div className="text-md flex items-center">
                 <CircleUserRound className="m-2" />
                 <div className="flex flex-col">

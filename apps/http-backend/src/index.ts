@@ -35,11 +35,12 @@ app.post('/signup', async function (req, res) {
         })
 
         res.json({
-            userId: user.id
+            userId: user.id,
+            message: "✅ Successfully signed up!!!"
         })
     } catch (e) {
         res.status(411).json({
-            message: "This username already exists."
+            message: "❌ This username already exists."
         })
     }
 
@@ -83,11 +84,12 @@ app.post('/signin', async function (req, res) {
         }, JWT_SECRET);
 
         res.json({
-            token
+            token,
+            message: "✅ Successfully signed in!!!"
         });
     } catch (e) {
         res.status(411).json({
-            message: "Incorrect credentials."
+            message: "❌ Incorrect credentials."
         })
     }
 
